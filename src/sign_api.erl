@@ -5,7 +5,9 @@
          create_store/1,
          get_last_count/4,
          delete_firstN_msgs/3,
-         get_firstN_msgs/3
+         get_firstN_msgs/3,
+         timestamp/1,
+         check/2
          ]).
 
 
@@ -159,7 +161,7 @@ get_from_reverse3(Tab, From, Index, Accum)->
 
 
 
-get_from_reverse2(Tab, Index, Index, Accum)->
+get_from_reverse2(_Tab, Index, Index, Accum)->
  
                 Accum
 ;
@@ -172,6 +174,14 @@ get_from_reverse2(Tab, From, Index, Accum)->
         [] ->
                 Accum
         end
+.
+
+-spec check(atom(), binary())-> list().
+
+check(Tab, MessBin)->
+    Ref = erlang:crc32(MessBin),
+    Ref1 = erlang:crc32(rev(MessBin,<<>>))*10000000000 + Ref,  
+    ets:lookup(Tab, Ref1)
 .
 
 
@@ -188,6 +198,9 @@ put_new_message(Tab, MessBin  )->
        Ref1                   
 .
 
-rev(<<>>, Acc) -> Acc;
+timestamp({Mega, Secs, Micro}) ->
+    Mega*1000*1000*1000*1000 + Secs * 1000 * 1000 + Micro.
+
+    rev(<<>>, Acc) -> Acc;
 rev(<<H:1/binary, Rest/binary>>, Acc) ->
     rev(Rest, <<H/binary, Acc/binary>>).

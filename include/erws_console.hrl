@@ -1,5 +1,20 @@
+
+%-define(TEST,1).
+
+-ifdef(TEST).
 -define('CONSOLE_LOG'(Str, Params), lager:info(Str, Params) ).
 -define('LOG_DEBUG'(Str, Params), lager:debug(Str, Params) ).
+-define('LOG_ERROR'(Str, Params), lager:error(Str, Params) ).
+-else.
+-define('CONSOLE_LOG'(Str, Params), true ).
+-define('LOG_DEBUG'(Str, Params), true ).
+-define('LOG_ERROR'(Str, Params), true ).
+
+-endif.
+
+-define('FACT_LOG'(Str, Params), lager:warning(Str, Params) ).
+
+
 -define(INIT_APPLY_TIMEOUT,1000).
 -define(HOST,"http://127.0.0.1:8098").
 -define(PORT, 8098).

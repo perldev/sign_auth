@@ -55,7 +55,7 @@ web_start() ->
 routes(Sign) ->
     cowboy_router:compile([{'_',
 			    [
-			     {"/app", erws_handler, [{sign, Sign }]}
+			     {"/app/[...]", erws_handler, [{sign, Sign }]}
 			    ]}]).
 
 start() ->
